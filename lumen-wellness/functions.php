@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LUMEN_VERSION', '1.2.0' );
+define( 'LUMEN_VERSION', '1.3.0' );
 
 require_once get_template_directory() . '/inc/template-data.php';
 require_once get_template_directory() . '/inc/customizer.php';
@@ -131,7 +131,8 @@ function lumen_shade( $hex, $amount ) {
  */
 function lumen_active_palette() {
 	$d       = lumen_defaults();
-	$preset  = lumen_opt( 'lumen_color_preset', 'sage' );
+	/** Filter the fallback preset so niche child themes can set their own. */
+	$preset  = lumen_opt( 'lumen_color_preset', apply_filters( 'lumen_default_preset', 'sage' ) );
 	$presets = lumen_color_presets();
 
 	if ( 'custom' !== $preset && isset( $presets[ $preset ] ) ) {
@@ -249,6 +250,36 @@ function lumen_head_meta() {
 	echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . "</script>\n";
 }
 add_action( 'wp_head', 'lumen_head_meta', 5 );
+
+/**
+ * Output analytics snippets if configured. Plausible is cookieless/privacy-first;
+ * GA4 is optional. Skips inside the Customizer preview and for logged-in admins.
+ */
+function lumen_analytics() {
+	if ( is_customize_preview() || current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$plausible = trim( (string) lumen_opt( 'lumen_plausible_domain', '' ) );
+	if ( $plausible ) {
+		$domain = preg_replace( '#^https?://#', '', $plausible );
+		$domain = trim( $domain, '/' );
+		printf(
+			'<script defer data-domain="%s" src="https://plausible.io/js/script.js"></script>' . "\n",
+			esc_attr( $domain )
+		);
+	}
+
+	$ga4 = trim( (string) lumen_opt( 'lumen_ga4_id', '' ) );
+	if ( $ga4 && preg_match( '/^G-[A-Z0-9]+$/i', $ga4 ) ) {
+		printf( '<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>' . "\n", esc_attr( $ga4 ) );
+		printf(
+			'<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config",%s);</script>' . "\n",
+			wp_json_encode( $ga4 )
+		);
+	}
+}
+add_action( 'wp_head', 'lumen_analytics', 20 );
 
 /* ============================================================
    CONTACT FORM — AJAX handler, nonce + honeypot protected.

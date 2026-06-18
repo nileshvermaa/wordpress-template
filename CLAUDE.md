@@ -143,16 +143,17 @@ before onboarding paying clients.
 | **New navigable pages** — Services archive + single Service/Program. | P2 | ✅ | `archive-lumen_service.php`, `single-lumen_service.php`, `single-lumen_program.php`. |
 | **Booking/CTA analytics** (Plausible/GA4 toggle). | P3 | ◻ deferred | Revisit in Phase 3. |
 
-### Phase 3 — Scale to a catalog & a business (P2–P3)
+### Phase 3 — Scale to a catalog & a business (P2–P3) — ✅ core done (v1.3.0)
 
-| Item | Pri | Effort | Why |
+| Item | Pri | Status | Notes |
 |---|---|---|---|
-| **Shared core / parent theme** (or a small framework) so new niches don't copy-paste `functions.php`. Decide classic-parent vs block-theme (`theme.json`) strategy. | P2 | XL | Avoids N copies drifting; makes the 5th theme cheap to build. |
-| **New niche variants** — dentist, yoga studio, physiotherapist, gym/PT, mental-health therapist — each a skin + tailored content. | P2 | L each | Expands the sellable catalog from 1 → many. |
-| **Sales/landing site for the themes themselves** (could be a Next.js site on Vercel, reusing Nilesh's existing stack) with live demos and pricing tiers (template vs done-for-you setup). | P2 | L | Turns the repo into a real product line. |
-| **Client onboarding/intake flow** — a form + checklist that collects brand assets, copy and colours, so setup is repeatable and fast. | P3 | M | Scales the "done-for-you" revenue without scaling hours. |
-| **Versioning + release automation** — tag releases, auto-build the upload zip as a GitHub Release asset, changelog. | P3 | M | Clean handoff + update story per theme. |
-| **Visual regression testing** (Playwright against the Docker/preview) to catch design breakage as themes share more code. | P3 | M | Confidence when refactoring the shared core. |
+| **Shared core via child themes + filters** (instead of duplicated parents). | P2 | ✅ | `lumen_defaults`, `lumen_default_preset`, `lumen_marquee_words` filters. A niche = a tiny child theme. Chose this over a separate parent/block theme — one maintained codebase, many demos. |
+| **Example niche variant** to prove the model. | P2 | ✅ | `lumen-wellness-yoga/` rebrands to a yoga studio in ~60 lines of filters. |
+| **Versioning + release automation.** | P3 | ✅ | `.github/workflows/release.yml` builds + attaches the theme zips to a GitHub Release on `v*` tags. |
+| **Analytics** (privacy-friendly + GA4 toggle). | P3 | ✅ | Plausible + GA4 Customizer fields; snippets skip admins/preview. |
+| **Sales/landing site for the themes** (Next.js on Vercel, live demos, pricing). | P2 | ◻ next | Separate project — natural next step now the catalog model exists. |
+| **Client onboarding/intake flow** (brand assets, copy, colours). | P3 | ◻ next | Form + checklist to scale done-for-you setup. |
+| **Visual regression testing** (Playwright vs Docker/preview). | P3 | ◻ next | Add as the catalog grows and code is shared. |
 
 ### Guiding principles for the roadmap
 1. **Don't break "zero build step on the client side."** Optional tooling for the

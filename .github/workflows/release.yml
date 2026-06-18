@@ -1,0 +1,38 @@
+name: Release
+
+# Tag a version (e.g. `git tag v1.3.0 && git push --tags`) and this builds the
+# upload-ready theme zip and publishes a GitHub Release with it attached.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build theme zips
+        run: |
+          set -e
+          # Linux `zip` writes forward-slash paths, with style.css at the top
+          # level inside the folder — exactly what WordPress expects.
+          zip -r lumen-wellness.zip lumen-wellness -x '*.DS_Store' '*/.*'
+          zip -r lumen-wellness-child.zip lumen-wellness-child -x '*.DS_Store' '*/.*'
+          zip -r lumen-wellness-yoga.zip lumen-wellness-yoga -x '*.DS_Store' '*/.*'
+          ls -lh *.zip
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            lumen-wellness.zip
+            lumen-wellness-child.zip
+            lumen-wellness-yoga.zip
+          generate_release_notes: true

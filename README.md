@@ -18,7 +18,15 @@ Production-grade, one-page WordPress themes built for service professionals — 
 
 | Theme | Industry | Palette | Status |
 |---|---|---|---|
-| [`lumen-wellness`](lumen-wellness/) | Health, nutrition & wellness coaching | Healing green / sage / cream | ✅ v1.0.0 |
+| [`lumen-wellness`](lumen-wellness/) | Health, nutrition & wellness coaching | Sage / Ocean / Terracotta / Lavender / Rosewood (switchable) | ✅ v1.3.0 |
+| [`lumen-wellness-yoga`](lumen-wellness-yoga/) | Yoga / breathwork studio (example variant) | Lavender | ✅ v1.0.0 |
+| [`lumen-wellness-child`](lumen-wellness-child/) | Blank child theme for client customizations | — | ✅ v1.0.0 |
+
+> **Variants are child themes, not forks.** A new niche overrides the parent's defaults, colour preset and copy through filters (see [`lumen-wellness-yoga/functions.php`](lumen-wellness-yoga/functions.php)) — one maintained codebase, many sellable demos.
+
+### Releases
+
+Tagging a version (`git tag v1.3.0 && git push --tags`) triggers [`release.yml`](.github/workflows/release.yml), which builds the upload-ready theme zips and attaches them to a [GitHub Release](https://github.com/nileshvermaa/wordpress-template/releases).
 
 ---
 

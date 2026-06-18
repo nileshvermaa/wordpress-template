@@ -202,6 +202,11 @@ function lumen_customize_register( $wp_customize ) {
 		'default'  => 'This website offers general wellness information and is not medical advice. Always consult a qualified health professional before making health decisions.',
 	) );
 
+	/* ── Section: Analytics ────────────────────────────────── */
+	$wp_customize->add_section( 'lumen_analytics', array( 'title' => __( 'Analytics', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );
+	$add( 'lumen_plausible_domain', array( 'label' => 'Plausible domain (optional)', 'section' => 'lumen_analytics', 'description' => 'Privacy-friendly, cookieless. Enter your site domain, e.g. aanyakapoor.com.' ) );
+	$add( 'lumen_ga4_id', array( 'label' => 'Google Analytics 4 ID (optional)', 'section' => 'lumen_analytics', 'description' => 'e.g. G-XXXXXXXXXX. Leave blank if using Plausible only.' ) );
+
 	/* ── Section: Social links ─────────────────────────────── */
 	$wp_customize->add_section( 'lumen_social', array( 'title' => __( 'Social Links', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );
 	$add( 'lumen_social_instagram', array( 'label' => 'Instagram URL', 'section' => 'lumen_social', 'type' => 'url', 'sanitize' => 'esc_url_raw', 'default' => 'https://instagram.com/' ) );

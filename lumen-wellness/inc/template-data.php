@@ -28,10 +28,14 @@ function lumen_opt( $key, $default = '' ) {
 /**
  * Brand defaults — used by the Customizer and as fallbacks.
  *
+ * Filterable via `lumen_defaults` so a child theme can rebrand the whole site
+ * for a different niche (yoga, therapy, dental, etc.) in a few lines, without
+ * duplicating the codebase. See lumen-wellness-yoga/ for an example.
+ *
  * @return array
  */
 function lumen_defaults() {
-	return array(
+	$defaults = array(
 		'brand_name'    => 'Aanya Kapoor',
 		'brand_accent'  => 'Wellness',
 		'hero_word'     => 'WELLNESS',
@@ -59,6 +63,14 @@ function lumen_defaults() {
 		'stat3_label'   => 'Evidence-based certifications',
 		'copyright'     => 'Aanya Kapoor Wellness',
 	);
+
+	/**
+	 * Filter the brand defaults. Child themes / niche variants can override any
+	 * key here (hero word, role, tagline, copy, default colour preset, etc.).
+	 *
+	 * @param array $defaults Default brand values.
+	 */
+	return apply_filters( 'lumen_defaults', $defaults );
 }
 
 /**
@@ -130,7 +142,7 @@ function lumen_socials() {
  * @return string[]
  */
 function lumen_marquee_words() {
-	return array(
+	return apply_filters( 'lumen_marquee_words', array(
 		'Nutrition Coaching',
 		'Gut Health',
 		'Sustainable Weight',
@@ -139,7 +151,7 @@ function lumen_marquee_words() {
 		'Energy & Sleep',
 		'Habit Building',
 		'Whole Foods',
-	);
+	) );
 }
 
 /**
