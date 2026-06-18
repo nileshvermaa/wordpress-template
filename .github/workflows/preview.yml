@@ -48,6 +48,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Try to enable GitHub Pages (Actions source) automatically so the deploy
+      # step doesn't 404 on a repo where Pages was never turned on. If the token
+      # can't enable it, fall back to the manual toggle in Settings → Pages.
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
