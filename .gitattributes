@@ -1,0 +1,18 @@
+# Normalize line endings on checkout
+* text=auto
+
+# PHP, CSS, JS — LF in the repo, converted on checkout per OS
+*.php text eol=lf
+*.css text eol=lf
+*.js  text eol=lf
+*.md  text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+
+# Binary — never touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
