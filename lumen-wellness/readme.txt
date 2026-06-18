@@ -39,6 +39,14 @@ inc/template-data.php — edit the clearly-labelled arrays there (one block each
 
 == Changelog ==
 
+= 1.2.0 =
+* Client-editable content via custom post types: Services, Programs, Testimonials — edit from wp-admin, no code. The front page uses them when present and falls back to demo content otherwise.
+* Editable example content is seeded on activation so wp-admin isn't empty.
+* New pages: a Services archive (/services/) and single Service/Program templates.
+* Lead-gen: optional Calendly embed under the contact form, footer newsletter opt-in (Mailchimp/ConvertKit), and a WhatsApp floating button.
+* Child theme starter included for safe customizations.
+* Translation template (.pot) added.
+
 = 1.1.0 =
 * New self-hosted font system: Fraunces (headings) + Mulish (body), preloaded — no third-party font request.
 * Readability pass: larger body text, looser line-height, optical-sizing, refined heading tracking.

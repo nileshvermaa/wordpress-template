@@ -4,7 +4,7 @@ Theme URI: https://github.com/nileshvermaa/wordpress-template
 Author: Nilesh Verma
 Author URI: https://github.com/nileshvermaa
 Description: A poster-style one-page theme for health, wellness and coaching brands. Editable brand name, colors, hero photo and contact details from the WordPress Customizer. No page builder required.
-Version: 1.1.0
+Version: 1.2.0
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
@@ -342,6 +342,28 @@ img { max-width: 100%; display: block; }
 .contact-email { font-size: 1.1rem; font-weight: 600; }
 .contact-email:hover { color: var(--color-accent); }
 .contact-meta { margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; color: var(--color-muted); font-size: 0.9rem; }
+
+/* ============================================================
+   NEWSLETTER BAND
+   ============================================================ */
+.newsletter { background: var(--color-blush); }
+.newsletter-inner { display: flex; flex-direction: column; gap: 1.25rem; align-items: center; text-align: center; padding: 3rem 1.5rem; }
+.newsletter-text { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.4rem, 3.5vw, 2rem); color: var(--color-ink); letter-spacing: -0.01em; }
+.newsletter-form { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; width: 100%; max-width: 30rem; }
+.newsletter-form input { flex: 1; min-width: 12rem; padding: 0.85rem 1.1rem; border: 1px solid var(--color-line); border-radius: 999px; background: var(--color-paper); font: inherit; color: inherit; }
+@media (min-width: 768px) { .newsletter-inner { flex-direction: row; justify-content: space-between; text-align: left; } .newsletter-text { max-width: 22rem; } }
+
+/* ============================================================
+   WHATSAPP FLOATING BUTTON
+   ============================================================ */
+.whatsapp-fab {
+  position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 70;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 3.5rem; height: 3.5rem; border-radius: 999px;
+  background: #25d366; color: #fff;
+  box-shadow: 0 8px 24px rgba(18,32,25,0.25); transition: transform 0.25s, box-shadow 0.25s;
+}
+.whatsapp-fab:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(18,32,25,0.3); }
 
 /* ============================================================
    DISCLAIMER BAR

@@ -131,16 +131,17 @@ before onboarding paying clients.
 | **Colour presets** selectable in one Customizer dropdown. | P1 | ✅ | 5 presets (Sage/Ocean/Terracotta/Lavender/Rosewood) + Custom; palette derives `paper-soft`/`line` so it reflows cohesively. |
 | **Hero image as LCP** — responsive `srcset`, AVIF/WebP, `fetchpriority`. | P1 | ◻ deferred | `wp_get_attachment_image` already emits srcset + `fetchpriority=high`; AVIF/WebP delivery is a hosting/plugin concern — revisit in Phase 2. |
 
-### Phase 2 — Productize for resale (P1–P2)
+### Phase 2 — Productize for resale (P1–P2) — ✅ DONE (v1.2.0)
 
-| Item | Pri | Effort | Why |
+| Item | Pri | Status | Notes |
 |---|---|---|---|
-| **ACF-free repeater fields** (or bundle ACF) so clients edit services / programs / testimonials from wp-admin instead of `template-data.php`. | P1 | L | The #1 thing that lets clients self-serve; raises perceived value. |
-| **One-click demo content importer** — ship demo content XML + a "Import demo" button so a fresh install looks like the preview instantly. | P2 | M | Removes the empty-site problem; standard for premium themes. |
-| **Child-theme support + docs** so client customizations survive updates. | P2 | S | Professional update story. |
-| **Full i18n + a translation file (.pot)**; verify every string is wrapped. | P2 | M | Sell internationally; some clients are non-English. |
-| **Lead-gen integrations** — Calendly embed block, Mailchimp/newsletter opt-in, WhatsApp click-to-chat, Google Maps for clinics. | P2 | M | These are what wellness clients actually ask for. |
-| **Booking/CTA analytics** — lightweight event tracking (Plausible/GA4 optional toggle) on the primary CTAs. | P3 | S | Helps clients see value → renewals/referrals. |
+| **Client-editable content** — services / programs / testimonials from wp-admin. | P1 | ✅ | CPTs in `inc/post-types.php` (no ACF dependency) with meta boxes; getters map CPT→template shape and fall back to demo arrays; example content seeded on activation. |
+| **Demo content** so a fresh install isn't empty. | P2 | ✅ | `lumen_seed_cpt_content()` seeds editable examples on activation (simpler + safer than a WXR importer). |
+| **Child-theme support + docs.** | P2 | ✅ | `lumen-wellness-child/` starter (style.css + functions.php). |
+| **i18n + translation template (.pot).** | P2 | ✅ (starter) | `languages/lumen-wellness.pot` header; strings already wrapped. Regenerate with `wp i18n make-pot` for full coverage. |
+| **Lead-gen integrations** — Calendly, newsletter, WhatsApp. | P2 | ✅ | Calendly inline embed under the form, footer newsletter opt-in (Mailchimp/ConvertKit action URL), WhatsApp floating button — all Customizer-driven. |
+| **New navigable pages** — Services archive + single Service/Program. | P2 | ✅ | `archive-lumen_service.php`, `single-lumen_service.php`, `single-lumen_program.php`. |
+| **Booking/CTA analytics** (Plausible/GA4 toggle). | P3 | ◻ deferred | Revisit in Phase 3. |
 
 ### Phase 3 — Scale to a catalog & a business (P2–P3)
 

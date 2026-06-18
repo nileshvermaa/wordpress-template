@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$programs = lumen_programs();
+$programs = lumen_get_programs();
 if ( empty( $programs ) ) {
 	return;
 }

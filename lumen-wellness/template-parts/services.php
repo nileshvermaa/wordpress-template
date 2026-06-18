@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services = lumen_services();
+$services = lumen_get_services();
 if ( empty( $services ) ) {
 	return;
 }

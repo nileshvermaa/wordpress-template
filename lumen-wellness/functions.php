@@ -9,11 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LUMEN_VERSION', '1.1.0' );
+define( 'LUMEN_VERSION', '1.2.0' );
 
 require_once get_template_directory() . '/inc/template-data.php';
 require_once get_template_directory() . '/inc/customizer.php';
 require_once get_template_directory() . '/inc/legal-content.php';
+require_once get_template_directory() . '/inc/post-types.php';
 
 /**
  * Theme supports & menus.
@@ -297,5 +298,10 @@ function lumen_after_switch_theme() {
 
 	// Scaffold the health/legal pages + footer menu (runs once).
 	lumen_create_legal_pages();
+
+	// Seed editable example Services / Programs / Testimonials (runs once),
+	// and flag rewrite rules to flush on the next init so CPT archives resolve.
+	lumen_seed_cpt_content();
+	update_option( 'lumen_flush_needed', 1 );
 }
 add_action( 'after_switch_theme', 'lumen_after_switch_theme' );

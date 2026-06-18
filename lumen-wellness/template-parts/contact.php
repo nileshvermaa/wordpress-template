@@ -14,6 +14,7 @@ $email        = lumen_opt( 'lumen_email', $d['email'] );
 $phone        = lumen_opt( 'lumen_phone', $d['phone'] );
 $location     = lumen_opt( 'lumen_location', $d['location'] );
 $availability = lumen_opt( 'lumen_availability', $d['availability'] );
+$calendly     = lumen_opt( 'lumen_calendly_url', '' );
 ?>
 <section class="section contact" id="contact">
 	<div class="wrap" style="max-width:52rem;">
@@ -47,6 +48,13 @@ $availability = lumen_opt( 'lumen_availability', $d['availability'] );
 
 			<p class="lumen-form-status" role="status" aria-live="polite" style="margin:0;font-size:0.9rem;"></p>
 		</form>
+
+		<?php if ( $calendly ) : ?>
+			<div class="calendly-embed reveal" style="margin-top:3rem;">
+				<div class="calendly-inline-widget" data-url="<?php echo esc_url( $calendly ); ?>" style="min-width:320px;height:680px;"></div>
+				<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+			</div>
+		<?php endif; ?>
 
 		<div class="contact-meta reveal">
 			<?php if ( $email ) : ?>

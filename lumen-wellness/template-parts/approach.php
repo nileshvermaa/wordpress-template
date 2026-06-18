@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $steps        = lumen_steps();
-$testimonials = lumen_testimonials();
+$testimonials = lumen_get_testimonials();
 ?>
 <section class="section" id="approach">
 	<div class="wrap">

@@ -40,6 +40,10 @@ Inspired by editorial poster design — a giant display word punched through by 
 - **Working contact form** — AJAX submission, WordPress nonce validation, honeypot spam protection, delivers via `wp_mail()`.
 - **SEO out of the box** — `<meta description>`, Open Graph, Twitter card tags, and a `schema.org/ProfessionalService` JSON-LD block. Steps aside automatically if Yoast SEO or Rank Math is detected.
 - **Accessibility** — skip-to-content link, semantic landmark regions (`<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`, `<article>`, `<figure>`), `:focus-visible` outlines, `prefers-reduced-motion` compliance, screen-reader labels on all inputs.
+- **Client-editable content** — Services, Programs and Testimonials are custom post types editable from wp-admin (no ACF, no code); the one-pager falls back to demo content until they're filled in.
+- **Dedicated pages** — a Services archive plus single Service/Program templates, in addition to the one-page front.
+- **Lead-gen built in** — optional Calendly embed, footer newsletter opt-in (Mailchimp/ConvertKit), and a WhatsApp floating button, all toggled from the Customizer.
+- **Child theme included** — `lumen-wellness-child/` for customizations that survive updates.
 - **No page builder, no build step** — pure PHP + CSS + vanilla JS. Upload the zip, activate. Done.
 - **Fallback templates** — `index.php`, `single.php`, `page.php`, `404.php`, `searchform.php` keep the theme functional for blog posts and inner pages.
 

@@ -171,6 +171,9 @@ function lumen_customize_register( $wp_customize ) {
 	$add( 'lumen_phone', array( 'label' => 'Phone', 'section' => 'lumen_contact', 'default' => $d['phone'] ) );
 	$add( 'lumen_location', array( 'label' => 'Location', 'section' => 'lumen_contact', 'default' => $d['location'] ) );
 	$add( 'lumen_availability', array( 'label' => 'Availability note', 'section' => 'lumen_contact', 'default' => $d['availability'] ) );
+	$add( 'lumen_calendly_url', array( 'label' => 'Calendly URL (optional)', 'section' => 'lumen_contact', 'type' => 'url', 'sanitize' => 'esc_url_raw', 'description' => 'Paste your Calendly link to embed a live scheduler under the contact form.' ) );
+	$add( 'lumen_newsletter_action', array( 'label' => 'Newsletter form action URL (optional)', 'section' => 'lumen_contact', 'type' => 'url', 'sanitize' => 'esc_url_raw', 'description' => 'Mailchimp/ConvertKit embedded-form “action” URL. Adds an email opt-in in the footer.' ) );
+	$add( 'lumen_newsletter_text', array( 'label' => 'Newsletter heading', 'section' => 'lumen_contact', 'default' => 'Get gentle wellness tips in your inbox' ) );
 
 	/* ── Section: Disclaimer bar ───────────────────────────── */
 	$wp_customize->add_section( 'lumen_disclaimer', array( 'title' => __( 'Disclaimer Bar', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );
