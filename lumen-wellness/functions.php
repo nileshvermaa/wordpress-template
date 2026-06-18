@@ -9,10 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LUMEN_VERSION', '1.0.0' );
+define( 'LUMEN_VERSION', '1.1.0' );
 
 require_once get_template_directory() . '/inc/template-data.php';
 require_once get_template_directory() . '/inc/customizer.php';
+require_once get_template_directory() . '/inc/legal-content.php';
 
 /**
  * Theme supports & menus.
@@ -35,6 +36,7 @@ function lumen_setup() {
 
 	register_nav_menus( array(
 		'primary' => __( 'Primary Menu', 'lumen-wellness' ),
+		'footer'  => __( 'Footer Legal Menu', 'lumen-wellness' ),
 	) );
 }
 add_action( 'after_setup_theme', 'lumen_setup' );
@@ -43,12 +45,12 @@ add_action( 'after_setup_theme', 'lumen_setup' );
  * Fonts + styles + scripts.
  */
 function lumen_assets() {
-	// Google Fonts (display: swap built in).
+	// Self-hosted fonts (Fraunces + Mulish) — no third-party request, GDPR-friendly.
 	wp_enqueue_style(
 		'lumen-fonts',
-		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap',
+		get_template_directory_uri() . '/assets/css/fonts.css',
 		array(),
-		null
+		LUMEN_VERSION
 	);
 
 	wp_enqueue_style( 'lumen-style', get_stylesheet_uri(), array( 'lumen-fonts' ), LUMEN_VERSION );
@@ -70,28 +72,113 @@ function lumen_assets() {
 add_action( 'wp_enqueue_scripts', 'lumen_assets' );
 
 /**
- * Preconnect to the font CDN for faster first paint.
+ * Preload the primary (latin) font files so the LCP heading/body paint fast.
  */
-function lumen_resource_hints( $hints, $relation ) {
-	if ( 'preconnect' === $relation ) {
-		$hints[] = array( 'href' => 'https://fonts.gstatic.com', 'crossorigin' );
+function lumen_preload_fonts() {
+	$base = get_template_directory_uri() . '/assets/fonts/';
+	foreach ( array( 'fraunces-latin.woff2', 'mulish-latin.woff2' ) as $f ) {
+		printf(
+			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( $base . $f )
+		);
 	}
-	return $hints;
 }
-add_filter( 'wp_resource_hints', 'lumen_resource_hints', 10, 2 );
+add_action( 'wp_head', 'lumen_preload_fonts', 1 );
 
 /**
- * Inject Customizer colours as CSS variables. Output is escaped.
+ * Convert a hex colour to an [r,g,b] array.
+ *
+ * @param string $hex Hex colour (#rgb or #rrggbb).
+ * @return int[] [r, g, b]
+ */
+function lumen_hex_rgb( $hex ) {
+	$hex = ltrim( (string) $hex, '#' );
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+	if ( 6 !== strlen( $hex ) ) {
+		return array( 0, 0, 0 );
+	}
+	return array(
+		hexdec( substr( $hex, 0, 2 ) ),
+		hexdec( substr( $hex, 2, 2 ) ),
+		hexdec( substr( $hex, 4, 2 ) ),
+	);
+}
+
+/**
+ * Mix a hex colour toward white (positive) or black (negative).
+ *
+ * @param string $hex    Base colour.
+ * @param float  $amount -1..1 (e.g. -0.05 = 5% darker).
+ * @return string Hex colour.
+ */
+function lumen_shade( $hex, $amount ) {
+	list( $r, $g, $b ) = lumen_hex_rgb( $hex );
+	$target = $amount < 0 ? 0 : 255;
+	$a      = abs( $amount );
+	$r      = (int) round( $r + ( $target - $r ) * $a );
+	$g      = (int) round( $g + ( $target - $g ) * $a );
+	$b      = (int) round( $b + ( $target - $b ) * $a );
+	return sprintf( '#%02x%02x%02x', $r, $g, $b );
+}
+
+/**
+ * Resolve the active palette from the chosen preset (or custom pickers).
+ *
+ * @return array accent, deep, ink, paper, blush (all hex).
+ */
+function lumen_active_palette() {
+	$d       = lumen_defaults();
+	$preset  = lumen_opt( 'lumen_color_preset', 'sage' );
+	$presets = lumen_color_presets();
+
+	if ( 'custom' !== $preset && isset( $presets[ $preset ] ) ) {
+		$p = $presets[ $preset ];
+		return array(
+			'accent' => $p['accent'],
+			'deep'   => $p['deep'],
+			'ink'    => $p['ink'],
+			'paper'  => $p['paper'],
+			'blush'  => $p['blush'],
+		);
+	}
+
+	return array(
+		'accent' => lumen_opt( 'lumen_color_accent', $d['color_accent'] ),
+		'deep'   => lumen_opt( 'lumen_color_deep', $d['color_deep'] ),
+		'ink'    => lumen_opt( 'lumen_color_ink', $d['color_ink'] ),
+		'paper'  => lumen_opt( 'lumen_color_paper', $d['color_paper'] ),
+		'blush'  => lumen_opt( 'lumen_color_blush', $d['color_blush'] ),
+	);
+}
+
+/**
+ * Inject the active palette as CSS variables, deriving paper-soft and the
+ * hairline colour so the whole theme reflows together. Output is escaped.
  */
 function lumen_dynamic_css() {
-	$d   = lumen_defaults();
+	$p = lumen_active_palette();
+
+	$accent     = sanitize_hex_color( $p['accent'] );
+	$deep       = sanitize_hex_color( $p['deep'] );
+	$ink        = sanitize_hex_color( $p['ink'] );
+	$paper      = sanitize_hex_color( $p['paper'] );
+	$blush      = sanitize_hex_color( $p['blush'] );
+	$paper_soft = lumen_shade( $paper, -0.045 );
+	list( $ir, $ig, $ib ) = lumen_hex_rgb( $ink );
+
 	$css = sprintf(
-		':root{--color-accent:%s;--color-accent-deep:%s;--color-ink:%s;--color-paper:%s;--color-blush:%s;}',
-		sanitize_hex_color( lumen_opt( 'lumen_color_accent', $d['color_accent'] ) ),
-		sanitize_hex_color( lumen_opt( 'lumen_color_deep', $d['color_deep'] ) ),
-		sanitize_hex_color( lumen_opt( 'lumen_color_ink', $d['color_ink'] ) ),
-		sanitize_hex_color( lumen_opt( 'lumen_color_paper', $d['color_paper'] ) ),
-		sanitize_hex_color( lumen_opt( 'lumen_color_blush', $d['color_blush'] ) )
+		':root{--color-accent:%s;--color-accent-deep:%s;--color-ink:%s;--color-paper:%s;--color-paper-soft:%s;--color-blush:%s;--color-line:rgba(%d,%d,%d,0.12);}',
+		$accent,
+		$deep,
+		$ink,
+		$paper,
+		$paper_soft,
+		$blush,
+		$ir,
+		$ig,
+		$ib
 	);
 	wp_add_inline_style( 'lumen-style', $css );
 }
@@ -207,5 +294,8 @@ function lumen_after_switch_theme() {
 		// reading settings sane for users who later add a static page.
 		update_option( 'posts_per_page', 9 );
 	}
+
+	// Scaffold the health/legal pages + footer menu (runs once).
+	lumen_create_legal_pages();
 }
 add_action( 'after_switch_theme', 'lumen_after_switch_theme' );

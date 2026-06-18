@@ -14,6 +14,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Sanitize the colour-preset choice against the known keys.
+ *
+ * @param string $value Submitted value.
+ * @return string
+ */
+function lumen_sanitize_color_preset( $value ) {
+	$valid = array_keys( lumen_color_presets() );
+	$valid[] = 'custom';
+	return in_array( $value, $valid, true ) ? $value : 'sage';
+}
+
+/**
+ * Sanitize a checkbox to a strict boolean.
+ *
+ * @param mixed $checked Submitted value.
+ * @return bool
+ */
+function lumen_sanitize_checkbox( $checked ) {
+	return ( isset( $checked ) && true === (bool) $checked );
+}
+
+/**
  * Register settings, sections and controls.
  *
  * @param WP_Customize_Manager $wp_customize Customizer manager.
@@ -77,7 +99,34 @@ function lumen_customize_register( $wp_customize ) {
 
 	/* ── Section: Colours ──────────────────────────────────── */
 	$wp_customize->add_section( 'lumen_colors', array( 'title' => __( 'Colours', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );
-	$add( 'lumen_color_accent', array( 'label' => 'Accent (primary)', 'section' => 'lumen_colors', 'type' => 'color', 'sanitize' => 'sanitize_hex_color', 'default' => $d['color_accent'] ) );
+
+	// Preset chooser — drives the whole palette in one click.
+	$preset_choices = array();
+	foreach ( lumen_color_presets() as $key => $p ) {
+		$preset_choices[ $key ] = $p['label'];
+	}
+	$preset_choices['custom'] = __( 'Custom (use pickers below)', 'lumen-wellness' );
+
+	$wp_customize->add_setting(
+		'lumen_color_preset',
+		array(
+			'default'           => 'sage',
+			'sanitize_callback' => 'lumen_sanitize_color_preset',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'lumen_color_preset',
+		array(
+			'label'       => __( 'Colour preset', 'lumen-wellness' ),
+			'description' => __( 'Pick a ready-made palette, or choose Custom to set each colour yourself below.', 'lumen-wellness' ),
+			'section'     => 'lumen_colors',
+			'type'        => 'select',
+			'choices'     => $preset_choices,
+		)
+	);
+
+	$add( 'lumen_color_accent', array( 'label' => 'Accent (primary)', 'section' => 'lumen_colors', 'type' => 'color', 'sanitize' => 'sanitize_hex_color', 'default' => $d['color_accent'], 'description' => 'Used when preset = Custom.' ) );
 	$add( 'lumen_color_deep', array( 'label' => 'Accent (deep)', 'section' => 'lumen_colors', 'type' => 'color', 'sanitize' => 'sanitize_hex_color', 'default' => $d['color_deep'] ) );
 	$add( 'lumen_color_ink', array( 'label' => 'Ink (text / dark band)', 'section' => 'lumen_colors', 'type' => 'color', 'sanitize' => 'sanitize_hex_color', 'default' => $d['color_ink'] ) );
 	$add( 'lumen_color_paper', array( 'label' => 'Paper (background)', 'section' => 'lumen_colors', 'type' => 'color', 'sanitize' => 'sanitize_hex_color', 'default' => $d['color_paper'] ) );
@@ -122,6 +171,33 @@ function lumen_customize_register( $wp_customize ) {
 	$add( 'lumen_phone', array( 'label' => 'Phone', 'section' => 'lumen_contact', 'default' => $d['phone'] ) );
 	$add( 'lumen_location', array( 'label' => 'Location', 'section' => 'lumen_contact', 'default' => $d['location'] ) );
 	$add( 'lumen_availability', array( 'label' => 'Availability note', 'section' => 'lumen_contact', 'default' => $d['availability'] ) );
+
+	/* ── Section: Disclaimer bar ───────────────────────────── */
+	$wp_customize->add_section( 'lumen_disclaimer', array( 'title' => __( 'Disclaimer Bar', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );
+
+	$wp_customize->add_setting(
+		'lumen_show_disclaimer',
+		array(
+			'default'           => true,
+			'sanitize_callback' => 'lumen_sanitize_checkbox',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'lumen_show_disclaimer',
+		array(
+			'label'       => __( 'Show the wellness disclaimer bar', 'lumen-wellness' ),
+			'description' => __( 'A slim notice above the footer. Recommended for health sites.', 'lumen-wellness' ),
+			'section'     => 'lumen_disclaimer',
+			'type'        => 'checkbox',
+		)
+	);
+	$add( 'lumen_disclaimer_text', array(
+		'label'    => 'Disclaimer text',
+		'section'  => 'lumen_disclaimer',
+		'type'     => 'textarea',
+		'default'  => 'This website offers general wellness information and is not medical advice. Always consult a qualified health professional before making health decisions.',
+	) );
 
 	/* ── Section: Social links ─────────────────────────────── */
 	$wp_customize->add_section( 'lumen_social', array( 'title' => __( 'Social Links', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );

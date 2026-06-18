@@ -17,3 +17,7 @@ desktop.ini
 
 # Node (if tooling is added later)
 node_modules/
+
+# PHP tooling (dev-only)
+/vendor/
+composer.lock

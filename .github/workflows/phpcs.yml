@@ -1,0 +1,31 @@
+name: PHPCS (advisory)
+
+# WordPress security + i18n + PHP-compat checks. Advisory for now (does not gate),
+# because the ruleset is still being tightened toward WordPress-Extra. Annotations
+# appear inline on PRs. Flip `continue-on-error` to false once the tree is clean.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  phpcs:
+    name: WordPress coding standards
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer, cs2pr
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress
+
+      - name: Run PHPCS
+        run: vendor/bin/phpcs -q --report=checkstyle | cs2pr || true

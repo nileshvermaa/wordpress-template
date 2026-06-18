@@ -28,7 +28,7 @@ A poster-style, conversion-focused one-page theme for integrative health coaches
 
 ### Design language
 
-Inspired by editorial poster design — a giant display word punched through by a framed portrait, a scrolling marquee, reveal-on-scroll sections, film-grain texture, and pill-shaped CTAs. Syne (headings) + Inter (body). Easily swapped to any colour palette from the WordPress Customizer.
+Inspired by editorial poster design — a giant display word punched through by a framed portrait, a scrolling marquee, reveal-on-scroll sections, film-grain texture, and pill-shaped CTAs. Fraunces (headings) + Mulish (body), self-hosted for speed and privacy. Switch the whole palette in one click with built-in colour presets (Sage, Ocean, Terracotta, Lavender, Rosewood) or go fully custom — all from the WordPress Customizer.
 
 ### Page sections
 

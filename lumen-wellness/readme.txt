@@ -39,9 +39,17 @@ inc/template-data.php — edit the clearly-labelled arrays there (one block each
 
 == Changelog ==
 
+= 1.1.0 =
+* New self-hosted font system: Fraunces (headings) + Mulish (body), preloaded — no third-party font request.
+* Readability pass: larger body text, looser line-height, optical-sizing, refined heading tracking.
+* WCAG AA contrast fixes for muted text and small accent labels.
+* Colour presets: Sage, Ocean, Terracotta, Lavender, Rosewood, or Custom — switch the whole palette in one click.
+* Health/legal pages auto-created on activation: Medical Disclaimer, Privacy Policy, Terms (+ a Footer Legal menu).
+* New site-wide wellness disclaimer bar (toggle + text in the Customizer).
+
 = 1.0.0 =
 * Initial release.
 
 == Credits ==
 
-* Fonts: Inter and Syne via Google Fonts (SIL Open Font License).
+* Fonts: Fraunces and Mulish (SIL Open Font License), self-hosted with the theme.

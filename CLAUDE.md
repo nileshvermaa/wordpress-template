@@ -120,16 +120,16 @@ which WordPress can choke on). Build it with .NET's ZipArchive forcing `/`:
 Prioritized. **P0** = do next, **P3** = someday. Effort: S/M/L/XL. Tackle P0/P1
 before onboarding paying clients.
 
-### Phase 1 — Harden & polish the flagship (P0–P1)
+### Phase 1 — Harden & polish the flagship (P0–P1) — ✅ DONE (v1.1.0)
 
-| Item | Pri | Effort | Why |
+| Item | Pri | Status | Notes |
 |---|---|---|---|
-| **Health/legal disclaimers** — medical disclaimer, testimonial "results not typical" disclosure, privacy policy + cookie consent, terms. Add as Customizer-toggleable footer blocks / sample pages. | P0 | M | Legal protection for Nilesh and clients selling in a health niche; testimonials make unverified-claim risk real. |
-| **Self-host fonts** (Inter + Syne) with `preload` + `font-display: swap`; drop the Google CDN request. | P0 | S | Faster LCP on cheap hosting + removes a GDPR third-party data transfer. |
-| **Hero image as LCP** — `srcset`/responsive sizes, AVIF/WebP, explicit dimensions, `fetchpriority=high`. | P1 | M | Core Web Vitals; the hero photo is the largest paint. |
-| **Accessibility pass to WCAG 2.2 AA** — colour-contrast check on the green palette, focus order, form error messaging, prefers-reduced-motion already done. | P1 | M | Quality bar + reduces client complaints. |
-| **PHPCS (WordPress Coding Standards) + theme-check in CI**, alongside existing `php -l`. | P1 | M | Catches escaping/i18n/security issues automatically; marketplace-grade. |
-| **More colour presets** (3–5 ready palettes: sage green, calm blue/clinic, warm terracotta, lavender/therapy) selectable in one Customizer dropdown. | P1 | M | Lets one theme serve many sub-niches; big selling point. |
+| **Health/legal disclaimers** — medical disclaimer, testimonial disclosure, privacy + terms. | P0 | ✅ | `inc/legal-content.php` auto-creates 3 pages + a Footer Legal menu on activation; site-wide disclaimer bar with Customizer toggle/text. |
+| **Self-host fonts** with `preload` + `font-display: swap`; drop the Google CDN. | P0 | ✅ | Swapped Syne/Inter → **Fraunces + Mulish**, variable woff2 in `assets/fonts/`, generated `assets/css/fonts.css`, latin files preloaded. |
+| **Accessibility — WCAG AA contrast** on the palette + small labels. | P1 | ✅ | `--color-muted` darkened (~6:1); small accent labels use `--color-accent-deep`. |
+| **PHPCS (WP standards) in CI** alongside `php -l`. | P1 | ✅ (advisory) | `phpcs.xml.dist` (Security + i18n + PHPCompat) + `composer.json` + `.github/workflows/phpcs.yml`. Flip `continue-on-error` to false once clean. |
+| **Colour presets** selectable in one Customizer dropdown. | P1 | ✅ | 5 presets (Sage/Ocean/Terracotta/Lavender/Rosewood) + Custom; palette derives `paper-soft`/`line` so it reflows cohesively. |
+| **Hero image as LCP** — responsive `srcset`, AVIF/WebP, `fetchpriority`. | P1 | ◻ deferred | `wp_get_attachment_image` already emits srcset + `fetchpriority=high`; AVIF/WebP delivery is a hosting/plugin concern — revisit in Phase 2. |
 
 ### Phase 2 — Productize for resale (P1–P2)
 

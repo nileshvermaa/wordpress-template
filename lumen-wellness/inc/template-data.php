@@ -62,6 +62,43 @@ function lumen_defaults() {
 }
 
 /**
+ * Ready-made colour presets. Selectable in the Customizer; each is a complete,
+ * contrast-checked palette so a site can be re-skinned for a different niche in
+ * one click. "custom" falls back to the individual colour pickers.
+ *
+ * @return array
+ */
+function lumen_color_presets() {
+	return array(
+		'sage' => array(
+			'label'  => 'Sage Green (default)',
+			'accent' => '#16a06b', 'deep' => '#0c6e48', 'ink' => '#122019',
+			'paper'  => '#f6faf6', 'blush' => '#d6f2e3',
+		),
+		'ocean' => array(
+			'label'  => 'Ocean Calm (blue)',
+			'accent' => '#1390b8', 'deep' => '#0a607f', 'ink' => '#0e1f29',
+			'paper'  => '#f4fafc', 'blush' => '#d2eef6',
+		),
+		'terracotta' => array(
+			'label'  => 'Warm Terracotta',
+			'accent' => '#cf6638', 'deep' => '#9c451d', 'ink' => '#2a1a12',
+			'paper'  => '#fbf6f2', 'blush' => '#f6e0d2',
+		),
+		'lavender' => array(
+			'label'  => 'Lavender Calm (therapy)',
+			'accent' => '#7c5fc4', 'deep' => '#553b97', 'ink' => '#1d1726',
+			'paper'  => '#f9f7fd', 'blush' => '#e7defa',
+		),
+		'rosewood' => array(
+			'label'  => 'Rosewood (beauty / spa)',
+			'accent' => '#c14a72', 'deep' => '#8f2a4f', 'ink' => '#241318',
+			'paper'  => '#fdf6f8', 'blush' => '#f7dde7',
+		),
+	);
+}
+
+/**
  * Socials — label, handle, URL. Leave URL blank to hide a row.
  *
  * @return array
