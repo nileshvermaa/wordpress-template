@@ -1,0 +1,137 @@
+name: Theme Preview
+
+# Spins up a real WordPress in CI, activates the theme, crawls the rendered
+# homepage into static HTML, and publishes it to GitHub Pages.
+#
+# Result: a free, persistent preview URL that updates on every push to main.
+# NOTE: this is a STATIC snapshot — the design renders exactly, but server-side
+# bits (the AJAX contact form) won't submit. Use docker-compose.yml locally to
+# test the live form.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow this workflow to publish to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deployment at a time.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build static snapshot
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mariadb:11
+        env:
+          MARIADB_DATABASE: wp
+          MARIADB_USER: wp
+          MARIADB_PASSWORD: wp
+          MARIADB_ROOT_PASSWORD: rootpass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli, gd, zip, mbstring
+          coverage: none
+
+      - name: Install WP-CLI
+        run: |
+          curl -fsSL -o wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x wp-cli.phar
+          sudo mv wp-cli.phar /usr/local/bin/wp
+          wp --info
+
+      - name: Download & install WordPress
+        run: |
+          mkdir wp && cd wp
+          wp core download --version=latest
+          wp config create \
+            --dbname=wp --dbuser=wp --dbpass=wp \
+            --dbhost=127.0.0.1:3306
+          wp core install \
+            --url="http://localhost:8080" \
+            --title="Lumen Wellness — Preview" \
+            --admin_user=admin --admin_password=admin \
+            --admin_email=preview@example.com \
+            --skip-email
+
+      - name: Activate theme
+        run: |
+          cp -r lumen-wellness wp/wp-content/themes/
+          cd wp
+          wp theme activate lumen-wellness
+          wp rewrite structure '/%postname%/' --hard
+          wp rewrite flush --hard
+
+      - name: Start WordPress & crawl to static HTML
+        run: |
+          cd wp
+          wp server --host=127.0.0.1 --port=8080 >/tmp/wp-server.log 2>&1 &
+          cd ..
+
+          echo "Waiting for WordPress to respond..."
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8080/ >/dev/null; then
+              echo "WordPress is up."
+              break
+            fi
+            sleep 2
+          done
+
+          mkdir -p _site
+          # Mirror the homepage + all CSS/JS/images, rewrite links to relative
+          # so the snapshot works under the /repo-name/ Pages sub-path.
+          wget \
+            --mirror \
+            --convert-links \
+            --adjust-extension \
+            --page-requisites \
+            --no-host-directories \
+            --no-parent \
+            -e robots=off \
+            --reject-regex '(wp-json|wp-login|xmlrpc|/feed|trackback|/comments/)' \
+            -P _site \
+            http://127.0.0.1:8080/ || true
+
+          # GitHub Pages: skip Jekyll processing so wp-* folders aren't dropped.
+          touch _site/.nojekyll
+          echo "----- snapshot contents -----"
+          ls -R _site | head -50
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

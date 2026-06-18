@@ -2,6 +2,16 @@
 
 Production-grade, one-page WordPress themes built for service professionals — health coaches, consultants, creatives and practitioners. Designed to be sold to clients on Hostinger (or any shared host), activated in minutes, and rebranded without touching code.
 
+[![Lint](https://github.com/nileshvermaa/wordpress-template/actions/workflows/lint.yml/badge.svg)](https://github.com/nileshvermaa/wordpress-template/actions/workflows/lint.yml)
+[![Theme Preview](https://github.com/nileshvermaa/wordpress-template/actions/workflows/preview.yml/badge.svg)](https://github.com/nileshvermaa/wordpress-template/actions/workflows/preview.yml)
+
+**🔗 Live preview:** https://nileshvermaa.github.io/wordpress-template/
+
+> The live preview is a **static snapshot** of the theme rendered in a real WordPress
+> install by CI on every push. The design is pixel-accurate; server-side features
+> (the AJAX contact form) don't submit in the snapshot — test those locally with Docker
+> (see [Local development](#local-development)).
+
 ---
 
 ## Themes included
@@ -87,6 +97,38 @@ lumen-wellness/
 The landing page is live at your domain the moment the theme is activated.
 
 ---
+
+## Local development
+
+Run a full, real WordPress (PHP + MySQL) on your machine with Docker — the
+contact form and everything else works exactly as it will on Hostinger.
+
+```bash
+docker compose up -d
+# open http://localhost:8080 and run the 2-minute WordPress install wizard
+# then WP Admin → Appearance → Themes → activate "Lumen Wellness"
+```
+
+The `lumen-wellness/` folder is mounted live, so edits on disk appear on refresh.
+
+```bash
+docker compose down       # stop (keeps your data)
+docker compose down -v    # stop and wipe the database for a clean start
+```
+
+## Continuous integration & preview
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| [`lint.yml`](.github/workflows/lint.yml) | every push / PR | Runs `php -l` on every PHP file — catches syntax errors before they ship |
+| [`preview.yml`](.github/workflows/preview.yml) | push to `main` | Boots WordPress in CI, activates the theme, crawls the homepage to static HTML, deploys to GitHub Pages |
+
+**One-time setup to enable the live preview:**
+
+1. Push these files to GitHub (already done if you're reading this on the repo).
+2. Repo **Settings → Pages → Build and deployment → Source → GitHub Actions**.
+3. The next push to `main` publishes the preview to
+   `https://nileshvermaa.github.io/wordpress-template/`.
 
 ## Customizing content
 
