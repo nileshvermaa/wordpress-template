@@ -1,5 +1,5 @@
 === Lumen Wellness ===
-Contributors: cloudframe
+Contributors: nileshverma
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
