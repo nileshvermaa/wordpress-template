@@ -39,6 +39,9 @@ inc/template-data.php — edit the clearly-labelled arrays there (one block each
 
 == Changelog ==
 
+= 1.3.1 =
+* Update demo brand identity to “Shivani Kamra Wellness” (refreshed screenshot). Brand name is editable in the Customizer.
+
 = 1.3.0 =
 * Niche-variant system: brand defaults, default colour preset and marquee are now filterable, so a new niche is a tiny child theme (see the included Lumen Yoga example) instead of a duplicated codebase.
 * Analytics: optional Plausible (cookieless) and Google Analytics 4 fields in the Customizer; snippets skip admins and the Customizer preview.

@@ -204,7 +204,7 @@ function lumen_customize_register( $wp_customize ) {
 
 	/* ── Section: Analytics ────────────────────────────────── */
 	$wp_customize->add_section( 'lumen_analytics', array( 'title' => __( 'Analytics', 'lumen-wellness' ), 'panel' => 'lumen_panel' ) );
-	$add( 'lumen_plausible_domain', array( 'label' => 'Plausible domain (optional)', 'section' => 'lumen_analytics', 'description' => 'Privacy-friendly, cookieless. Enter your site domain, e.g. aanyakapoor.com.' ) );
+	$add( 'lumen_plausible_domain', array( 'label' => 'Plausible domain (optional)', 'section' => 'lumen_analytics', 'description' => 'Privacy-friendly, cookieless. Enter your site domain, e.g. shivanikamra.com.' ) );
 	$add( 'lumen_ga4_id', array( 'label' => 'Google Analytics 4 ID (optional)', 'section' => 'lumen_analytics', 'description' => 'e.g. G-XXXXXXXXXX. Leave blank if using Plausible only.' ) );
 
 	/* ── Section: Social links ─────────────────────────────── */

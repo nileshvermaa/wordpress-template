@@ -36,13 +36,13 @@ function lumen_opt( $key, $default = '' ) {
  */
 function lumen_defaults() {
 	$defaults = array(
-		'brand_name'    => 'Aanya Kapoor',
+		'brand_name'    => 'Shivani Kamra',
 		'brand_accent'  => 'Wellness',
 		'hero_word'     => 'WELLNESS',
 		'role'          => 'Integrative Health & Nutrition Coach',
 		'tagline'       => 'Real food, gentle habits, lasting energy — health that finally fits your life.',
 		'location'      => 'Bengaluru, India',
-		'email'         => 'hello@aanyakapoor.com',
+		'email'         => 'hello@shivanikamra.com',
 		'phone'         => '+91 90000 00000',
 		'availability'  => 'Now accepting new 1:1 clients',
 		'booking_url'   => '#contact',
@@ -61,7 +61,7 @@ function lumen_defaults() {
 		'stat2_label'   => 'One-to-one coaching journeys',
 		'stat3_value'   => '4',
 		'stat3_label'   => 'Evidence-based certifications',
-		'copyright'     => 'Aanya Kapoor Wellness',
+		'copyright'     => 'Shivani Kamra Wellness',
 	);
 
 	/**
@@ -252,7 +252,7 @@ function lumen_testimonials() {
 			'meta'  => 'Lost 9kg · kept it off 1 year',
 		),
 		array(
-			'quote' => '"Aanya is the first coach who treated me like a person, not a meal plan. The check-ins kept me honest and the science kept me confident."',
+			'quote' => '"Shivani is the first coach who treated me like a person, not a meal plan. The check-ins kept me honest and the science kept me confident."',
 			'name'  => 'Rahul T.',
 			'meta'  => 'Reversed pre-diabetes markers',
 		),
