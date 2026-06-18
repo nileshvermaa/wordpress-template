@@ -87,12 +87,15 @@ jobs:
       - name: Start WordPress & crawl to static HTML
         run: |
           cd wp
-          wp server --host=127.0.0.1 --port=8080 >/tmp/wp-server.log 2>&1 &
+          # Bind to all interfaces; crawl via the same host as siteurl
+          # (localhost) so WordPress doesn't 301-redirect to another host
+          # and break wget's single-host crawl.
+          wp server --host=0.0.0.0 --port=8080 >/tmp/wp-server.log 2>&1 &
           cd ..
 
           echo "Waiting for WordPress to respond..."
           for i in $(seq 1 30); do
-            if curl -sf http://127.0.0.1:8080/ >/dev/null; then
+            if curl -sf http://localhost:8080/ >/dev/null; then
               echo "WordPress is up."
               break
             fi
@@ -112,7 +115,7 @@ jobs:
             -e robots=off \
             --reject-regex '(wp-json|wp-login|xmlrpc|/feed|trackback|/comments/)' \
             -P _site \
-            http://127.0.0.1:8080/ || true
+            http://localhost:8080/ || true
 
           # GitHub Pages: skip Jekyll processing so wp-* folders aren't dropped.
           touch _site/.nojekyll
