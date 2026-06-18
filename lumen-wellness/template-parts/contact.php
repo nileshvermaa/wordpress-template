@@ -51,7 +51,7 @@ $calendly     = lumen_opt( 'lumen_calendly_url', '' );
 
 		<?php if ( $calendly ) : ?>
 			<div class="calendly-embed reveal" style="margin-top:3rem;">
-				<div class="calendly-inline-widget" data-url="<?php echo esc_url( $calendly ); ?>" style="min-width:320px;height:680px;"></div>
+				<div class="calendly-inline-widget" data-url="<?php echo esc_url( $calendly ); ?>" style="min-width:0;width:100%;height:680px;"></div>
 				<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 			</div>
 		<?php endif; ?>

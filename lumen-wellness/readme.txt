@@ -39,6 +39,11 @@ inc/template-data.php — edit the clearly-labelled arrays there (one block each
 
 == Changelog ==
 
+= 1.4.0 =
+* Mobile/tablet navigation: accessible hamburger menu (aria-expanded, Esc to close, closes on link tap/resize) — previously there was no nav below 900px.
+* Responsive hardening: fluid hero word (clamp) and photo, dynamic viewport height (svh), smoother 1→2→3 column grids for tablets, tighter spacing on small phones.
+* Fixed potential horizontal overflow (images now height:auto; Calendly embed is fluid, not min-width:320px).
+
 = 1.3.1 =
 * Update demo brand identity to “Shivani Kamra Wellness” (refreshed screenshot). Brand name is editable in the Customizer.
 

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LUMEN_VERSION', '1.3.1' );
+define( 'LUMEN_VERSION', '1.4.0' );
 
 require_once get_template_directory() . '/inc/template-data.php';
 require_once get_template_directory() . '/inc/customizer.php';
@@ -185,6 +185,33 @@ function lumen_dynamic_css() {
 	wp_add_inline_style( 'lumen-style', $css );
 }
 add_action( 'wp_enqueue_scripts', 'lumen_dynamic_css', 20 );
+
+/**
+ * Render the primary navigation links — the assigned menu, or in-page anchors
+ * as a fallback. Shared by the desktop bar and the mobile panel.
+ */
+function lumen_nav_links() {
+	if ( has_nav_menu( 'primary' ) ) {
+		wp_nav_menu( array(
+			'theme_location' => 'primary',
+			'container'      => false,
+			'items_wrap'     => '%3$s',
+			'depth'          => 1,
+			'fallback_cb'    => false,
+		) );
+		return;
+	}
+	$links = array(
+		'#about'    => __( 'About', 'lumen-wellness' ),
+		'#services' => __( 'Services', 'lumen-wellness' ),
+		'#programs' => __( 'Programs', 'lumen-wellness' ),
+		'#approach' => __( 'Approach', 'lumen-wellness' ),
+		'#contact'  => __( 'Contact', 'lumen-wellness' ),
+	);
+	foreach ( $links as $href => $label ) {
+		printf( '<a href="%s">%s</a>', esc_attr( $href ), esc_html( $label ) );
+	}
+}
 
 /**
  * SEO: meta description + Open Graph + Twitter + schema.org JSON-LD.

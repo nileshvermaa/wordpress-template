@@ -42,32 +42,23 @@ $primary_cta = lumen_opt( 'lumen_primary_cta', $d['primary_cta'] );
 		</a>
 
 		<nav class="nav-links" aria-label="<?php esc_attr_e( 'Primary', 'lumen-wellness' ); ?>">
-			<?php
-			if ( has_nav_menu( 'primary' ) ) {
-				wp_nav_menu( array(
-					'theme_location' => 'primary',
-					'container'      => false,
-					'items_wrap'     => '%3$s',
-					'depth'          => 1,
-					'fallback_cb'    => false,
-				) );
-			} else {
-				// Default in-page anchors.
-				$links = array(
-					'#about'        => __( 'About', 'lumen-wellness' ),
-					'#services'     => __( 'Services', 'lumen-wellness' ),
-					'#programs'     => __( 'Programs', 'lumen-wellness' ),
-					'#approach'     => __( 'Approach', 'lumen-wellness' ),
-					'#contact'      => __( 'Contact', 'lumen-wellness' ),
-				);
-				foreach ( $links as $href => $label ) {
-					printf( '<a href="%s">%s</a>', esc_attr( $href ), esc_html( $label ) );
-				}
-			}
-			?>
+			<?php lumen_nav_links(); ?>
 		</nav>
 
 		<a class="btn btn-solid nav-cta" href="<?php echo esc_url( $booking_url ); ?>"><?php echo esc_html( $primary_cta ); ?></a>
+
+		<button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="<?php esc_attr_e( 'Open menu', 'lumen-wellness' ); ?>">
+			<span class="nav-toggle-bar"></span>
+			<span class="nav-toggle-bar"></span>
+			<span class="nav-toggle-bar"></span>
+		</button>
+	</div>
+
+	<div class="mobile-menu" id="mobile-menu" hidden>
+		<nav class="mobile-menu-links" aria-label="<?php esc_attr_e( 'Mobile', 'lumen-wellness' ); ?>">
+			<?php lumen_nav_links(); ?>
+		</nav>
+		<a class="btn btn-solid mobile-menu-cta" href="<?php echo esc_url( $booking_url ); ?>"><?php echo esc_html( $primary_cta ); ?></a>
 	</div>
 </header>
 
